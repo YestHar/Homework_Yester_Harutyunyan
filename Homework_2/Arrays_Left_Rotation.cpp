@@ -7,36 +7,27 @@ string rtrim(const string &);
 vector<string> split(const string &);
 
 /*
- * Complete the 'arrayManipulation' function below.
+ * Complete the 'rotLeft' function below.
  *
- * The function is expected to return a LONG_INTEGER.
+ * The function is expected to return an INTEGER_ARRAY.
  * The function accepts following parameters:
- *  1. INTEGER n
- *  2. 2D_INTEGER_ARRAY queries
+ *  1. INTEGER_ARRAY a
+ *  2. INTEGER d
  */
 
+vector<int> rotLeft(vector<int> a, int d) {
+    int vector_size = a.size();
 
-
-
-long arrayManipulation(int n, vector<vector<int>> queries) {
-    vector<long> arr(n+1,0);
-    long max_val = 0;
-    for (const auto& query : queries) {
-        int a = query[0];
-        int b = query[1];
-        int k = query[2];
-        arr[a - 1] += k;
-        arr[b] -= k;
+    vector<int> rotated(vector_size); 
     
+    for(int i = 0; i < vector_size; i++) {
+        int new_index = (i + vector_size - d) % vector_size; 
+        rotated[new_index] = a[i]; 
     }
-    long sum = 0;
-    for (int i = 0; i < n; i++){
-        sum += arr[i];
-        max_val = max(max_val, sum);
-    }
-    return max_val;
-    
+
+    return rotated; 
 }
+
 int main()
 {
     ofstream fout(getenv("OUTPUT_PATH"));
@@ -48,28 +39,32 @@ int main()
 
     int n = stoi(first_multiple_input[0]);
 
-    int m = stoi(first_multiple_input[1]);
+    int d = stoi(first_multiple_input[1]);
 
-    vector<vector<int>> queries(m);
+    string a_temp_temp;
+    getline(cin, a_temp_temp);
 
-    for (int i = 0; i < m; i++) {
-        queries[i].resize(3);
+    vector<string> a_temp = split(rtrim(a_temp_temp));
 
-        string queries_row_temp_temp;
-        getline(cin, queries_row_temp_temp);
+    vector<int> a(n);
 
-        vector<string> queries_row_temp = split(rtrim(queries_row_temp_temp));
+    for (int i = 0; i < n; i++) {
+        int a_item = stoi(a_temp[i]);
 
-        for (int j = 0; j < 3; j++) {
-            int queries_row_item = stoi(queries_row_temp[j]);
+        a[i] = a_item;
+    }
 
-            queries[i][j] = queries_row_item;
+    vector<int> result = rotLeft(a, d);
+
+    for (size_t i = 0; i < result.size(); i++) {
+        fout << result[i];
+
+        if (i != result.size() - 1) {
+            fout << " ";
         }
     }
 
-    long result = arrayManipulation(n, queries);
-
-    fout << result << "\n";
+    fout << "\n";
 
     fout.close();
 
