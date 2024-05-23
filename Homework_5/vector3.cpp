@@ -11,12 +11,13 @@ public:
     Vector3 operator-(const Vector3& V2) const;
     Vector3 operator/(const Vector3& V2) const;
     Vector3 operator++();
-    Vector3 operator++(int num);
+    Vector3 operator++(int);
     Vector3 operator--();
-    Vector3 operator--(int num);
+    Vector3 operator--(int);
     bool operator==(const Vector3& V2) const;
     bool operator!=(const Vector3& V2) const;
-    friend std::ostream& operator<<(std::ostream& os, Vector3& V);
+    template <typename Out>
+    friend Out& operator<<(Out& os, Vector3& V);
 };
 
 Vector3 Vector3::operator+(const Vector3& V2) const {
@@ -43,7 +44,7 @@ Vector3 Vector3::operator++(){
     return Vector3(++x, ++y, ++z);
 }
 
-Vector3 Vector3::operator++(int num){
+Vector3 Vector3::operator++(int){
     return Vector3(++x, ++y, ++z);
 }
 
@@ -51,7 +52,7 @@ Vector3 Vector3::operator--(){
     return Vector3(--x, --y, --z);
 }
 
-Vector3 Vector3::operator--(int num){
+Vector3 Vector3::operator--(int){
     return Vector3(--x, --y, --z);
 }
 
@@ -69,7 +70,8 @@ bool Vector3::operator==(const Vector3& V2) const {
     return false;
 }
 
-std::ostream& operator<<(std::ostream& os, Vector3& V) {
+template <typename Out>
+Out& operator<<(Out& os, Vector3& V) {
     os << '(' << V.x << ',' << V.y << ',' << V.z << ')';
     return os;
 }
