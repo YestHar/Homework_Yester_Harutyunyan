@@ -1,5 +1,5 @@
 #include "vector.hpp"
-
+#include <iostream>
 int main() {
     Vector<int> v;
     for(int i = 0; i < 5; ++i) {

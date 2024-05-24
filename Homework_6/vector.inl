@@ -1,8 +1,3 @@
-#ifndef VECTOR_INL
-#define VECTOR_INL
-
-#include "vector.hpp"
-
 template <typename T>
 Vector<T>::Vector() {
     data = nullptr;
@@ -18,26 +13,36 @@ Vector<T>::Vector(size_t size) {
 }
 
 template <typename T>
-Vector<T>::Vector(const Vector& other) : data((T*)malloc(other._capacity * sizeof(T))), _size(other._size), _capacity(other._capacity){
+Vector<T>::Vector(const Vector& other) : _size(other._size), _capacity(other._capacity) {
+    data = malloc(other._capacity * sizeof(T));
     for(size_t i = 0; i < _size; ++i){
         data[i] = other.data[i];
     }
 }
 
+template<typename T>
+Vector<T>::Vector(Vector&& other) : _capacity(other._capacity), _size(other._size), data(other.data) {
+	other._size = 0;
+	other._capacity = 0;
+	other.data = nullptr;
+}
+
 template <typename T>
 Vector<T>::~Vector() {
-    free(data);
+    if (data) {
+        free(data);
+    }
 }
 
 //Iterators
 
 template <typename T>
-const typename Vector<T>::VectorIterator Vector<T>::begin() const {
+typename Vector<T>::VectorIterator Vector<T>::begin(){
     return VectorIterator(data);
 }
 
 template <typename T>
-const typename Vector<T>::VectorIterator Vector<T>::end() const {
+typename Vector<T>::VectorIterator Vector<T>::end(){
     return VectorIterator(data + _size);
 }
 
@@ -166,7 +171,7 @@ T* Vector<T>::get_data() {
 //Modifiers
 
 template <typename T>
-void Vector<T>::push_back(T value) {
+void Vector<T>::push_back(const T& value) {
     if (_capacity <= _size) {
         size_t newCapacity = _capacity == 0 ? 1 : _capacity * 2;
 
@@ -295,19 +300,15 @@ void Vector<T>::erase(size_t position, size_t end_position) {
                 _size = _size - (end_position - position);
             } else {
                 throw("End Position have to be bigger than first Position");
-            }
-            
-        }
-        
+            }  
+        } 
     }
-    
 }
 
 template <typename T>
 void Vector<T>::clear() {
-    if (_size != 0) {
-        _size = 0;
-    }
+    free(data);
+    _capacity = nullptr;
+    _size = 0;
 }
 
-#endif // VECTOR_INL

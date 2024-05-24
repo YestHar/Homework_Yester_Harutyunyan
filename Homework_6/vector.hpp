@@ -1,18 +1,18 @@
-#ifndef VECTOR_HPP
-#define VECTOR_HPP
-#include <iostream>
+#pragma once
+#include <cstddef>
 
 template <typename T>
 class Vector {
 private:
-    T* data;
-    size_t _size;
-    size_t _capacity;
+    T* data = nullptr;
+    size_t _size = 0;
+    size_t _capacity = 0;
 
 public:
     Vector();
     Vector(size_t size);
     Vector(const Vector& other); //Copy constructor
+    Vector(Vector&& other);
     ~Vector();
 
     //Iterators
@@ -48,8 +48,8 @@ public:
         };
     };
 
-    const VectorIterator begin()const;
-    const VectorIterator end() const;    
+    VectorIterator begin();
+    VectorIterator end();    
 
     //Capacity
 
@@ -72,7 +72,7 @@ public:
 
     //Modifiers
 
-    void push_back(T value);
+    void push_back(const T& value);
     void pop_back();
     void insert(size_t position, const T& value);
     //Swap the two elements of vector
@@ -85,4 +85,3 @@ public:
 };
 
 #include "vector.inl"
-#endif //VECTOR_HPP
